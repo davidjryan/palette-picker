@@ -20,5 +20,6 @@ main {
 section {
   width: 20%;
   height: 100%;
+  text-align: center;
   transition: background .1s cubic-bezier(0.4, 0.01, 0.58, 1),box-shadow .1s ease-in-out;
 }
