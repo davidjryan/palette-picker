@@ -1,0 +1,24 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  height: 55px;
+  background-color: #ffffff;
+  width: 100%;
+}
+
+header p {
+  margin: 17px 20px;
+}
+
+main { 
+  display: flex;
+}
+
+section {
+  width: 20%;
+  height: 100%;
+  transition: background .1s cubic-bezier(0.4, 0.01, 0.58, 1),box-shadow .1s ease-in-out;
+}
