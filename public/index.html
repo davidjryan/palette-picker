@@ -11,30 +11,39 @@
   <body>
     <header>
       <p class="header-statement">Press spacebar to change color schemes</p>
-      <button class="save"></button>
-      <button class="hamburger"></button>
+      <nav>
+        <ul>
+          <li>Project/template menu</li>
+          <li>|</li>
+          <li><input class="project-save-input" placeholder="Save Project" type="text"><input type="submit" value="Save" class="project-save"></li>
+          <li>|</li>
+          <li><input class="palette-save-input" placeholder="Save Palette" type="text"><input type="submit" value="Save" class="palette-save"></li>
+        </ul>
+      </nav>
     </header>
     <main>
       <section class="color-1" data-index="1">
-        <button class="color-1-lock"></button>
+        <button class="color-1-lock lock"></button>
         <p class="color-1-text">yo</p>
       </section>
       <section class="color-2" data-index="2">
-        <button class="color-2-lock"></button>
+        <button class="color-2-lock lock"></button>
         <p class="color-2-text">yo</p>
       </section>
       <section class="color-3" data-index="3">
-        <button class="color-3-lock"></button>
+        <button class="color-3-lock lock"></button>
         <p class="color-3-text">yo</p>
       </section>
       <section class="color-4" data-index="4">
-        <button class="color-4-lock"></button>
+        <button class="color-4-lock lock"></button>
         <p class="color-4-text">yo</p>
       </section>
       <section class="color-5" data-index="5">
-        <button class="color-5-lock"></button>
+        <button class="color-5-lock lock"></button>
         <p class="color-5-text">yo</p>
       </section>
     </main>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="js/scripts.js"></script>
   </body>
 </html>
