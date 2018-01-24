@@ -36,10 +36,6 @@ li {
   margin-right: 5px;
 }
 
-li button {
-  margin-left: 5px;
-}
-
 input[type="text"] {
     width: 200px;
     height: 18px;
@@ -66,11 +62,15 @@ section {
   align-content: flex-end;
   width: 20%;
   height: 725px;
-  text-align: center;
+  text-align: center; 
   transition: background .1s cubic-bezier(0.4, 0.01, 0.58, 1),box-shadow .1s ease-in-out;
 }
 
-section button {
+.color {
+  background-color: none; 
+}
+
+section div {
   margin-top: auto;
   height: 48px;
   width: 48px;
@@ -78,7 +78,7 @@ section button {
   transition: opacity .5s ease-in-out;
 }
 
-.locked {
+.closed {
   background-image: url('./assets/lock.svg');
 }
 
