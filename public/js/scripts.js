@@ -18,10 +18,13 @@ const randomColor = () => {
 // assign colors to DOM
 
 const getColors = () => {
-  // get sections
-
-  // iterate over each and color and hex value
-  
+  $(section).each( () => {
+    if (!$(this).hasClass('locked')) {
+      const newColor = randomColor()
+      $(this).css("background-color", newColor)
+      $(this).find('.hex').text(newColor) 
+    };
+  });
 }
 
 // toggle classes
