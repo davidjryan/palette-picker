@@ -78,10 +78,6 @@ section button {
   transition: opacity .5s ease-in-out;
 }
 
-section:hover + .lock, .lock:hover {
-    display: inline-block;
-}
-
 .locked {
   background-image: url('./assets/lock.svg');
 }
