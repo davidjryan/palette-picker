@@ -1,13 +1,6 @@
-$(window).keypress((event) => {
-  if (event.which === 32) {
-    getColors();
-  }
-});
-
-
-
 $(document).ready(() => {
   getColors();
+  console.log("you're in")
 });
 
 // generate random colors
@@ -18,15 +11,27 @@ const randomColor = () => {
 // assign colors to DOM
 
 const getColors = () => {
-  $(section).each( () => {
+  const color = $('.color')
+  color.each( function() {
     if (!$(this).hasClass('locked')) {
       const newColor = randomColor()
-      $(this).css("background-color", newColor)
+      debugger;
+      $(this).css('background-color', newColor)
       $(this).find('.hex').text(newColor) 
     };
   });
 }
 
-// toggle classes
+document.body.onkeyup = function(e) {
+  console.log(e.keyCode)
+  if (e.keyCode === 32) {
+    getColors();
+  }
+};
+
+$('.lock').on('click', (event) => {
+  $(event.target).parents('.color').toggleClass('locked');
+  $(event.target).toggleClass('closed');
+})
 
  
