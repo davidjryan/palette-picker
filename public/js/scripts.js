@@ -11,11 +11,9 @@ const randomColor = () => {
 // assign colors to DOM
 
 const getColors = () => {
-  const color = $('.color')
-  color.each( function() {
+  $('.color').each( function() {
     if (!$(this).hasClass('locked')) {
       const newColor = randomColor()
-      debugger;
       $(this).css('background-color', newColor)
       $(this).find('.hex').text(newColor) 
     };
