@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 const bodyParser = require('body-parser');
 
 // We want to know if we're in development, testing, or production environment.  
@@ -12,6 +13,12 @@ const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
 
 app.set('port', process.env.PORT || 3000);
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.locals.title = 'palette-picker';
 
 app.get('/', (request, response) => {
   response.send('what up color boy')
@@ -38,6 +45,7 @@ app.get('/api/v1/palettes', (request, response) => {
 });
 
 app.post('/api/v1/projects', (request, response) => {
+  console.log(request)
   const project = request.body;
 
   for (let requiredParameter of ['project']) {
