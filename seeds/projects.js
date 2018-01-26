@@ -9,9 +9,9 @@ exports.seed = function (knex, Promise) {
         }, 'id')
           .then(project => {
             return knex('palettes').insert([
-              { hex1: '#2f2fcf', hex2: '#2f2fcf', hex3: '#2f2fcf', hex4: '#2f2fcf', hex5: '#2f2fcf', project_id: project[0] },
-              { hex1: '#2f2fcf', hex2: '#2f2fcf', hex3: '#2f2fcf', hex4: '#2f2fcf', hex5: '#2f2fcf', project_id: project[0] },
-              { hex1: '#2f2fcf', hex2: '#2f2fcf', hex3: '#2f2fcf', hex4: '#2f2fcf', hex5: '#2f2fcf', project_id: project[0] },
+              { palette: "first", hex1: '#2f2fcf', hex2: '#2f2fcf', hex3: '#2f2fcf', hex4: '#2f2fcf', hex5: '#2f2fcf', project_id: project[0] },
+              { palette: "second", hex1: '#2f2fcf', hex2: '#2f2fcf', hex3: '#2f2fcf', hex4: '#2f2fcf', hex5: '#2f2fcf', project_id: project[0] },
+              { palette: "third", hex1: '#2f2fcf', hex2: '#2f2fcf', hex3: '#2f2fcf', hex4: '#2f2fcf', hex5: '#2f2fcf', project_id: project[0] },
             ])
           })
           .then(() => console.log('Seeding complete!'))
