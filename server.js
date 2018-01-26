@@ -44,7 +44,8 @@ app.post('/api/v1/projects', (request, response) => {
     if(!project[requiredParameter]) {
       return response
         .status(422)
-        .send({ error: `Expected format: { project: <String> }. You're missing a "${requiredParameter}" property.` });
+        .send({ error: `Expected format: { project: <String> }. 
+          You're missing a "${requiredParameter}" property.` });
     }
   }
 
