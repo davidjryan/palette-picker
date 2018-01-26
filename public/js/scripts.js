@@ -67,7 +67,7 @@ const fetchPalettes = async () => {
 }
 
 const appendPalettes = (palettes) => {
-  palettes.forEach((palette, index) => {
+  palettes.forEach((palette, index) => { 
     console.log(palette)
     // make conditional -- if project.id exists don't append
     $(`li.project-${palette.project_id}`).append(`<li class="palette-${palette.id}"><a href="#">${palette.palette}</a></li>`)
