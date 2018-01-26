@@ -37,7 +37,25 @@ app.get('/api/v1/palettes', (request, response) => {
     });
 });
 
+app.post('/apit/v1/projects', (request, response) => {
+  const project = request.body;
 
+  for (let requiredParameter of ['project']) {
+    if(!project[requiredParameter]) {
+      return response
+        .status(422)
+        .send({ error: `Expected format: { project: <String> }. You're missing a "${requiredParameter}" property.` });
+    }
+  }
+
+  database('projects').insert(project, 'id')
+    .then(paper => {
+      response.status(201).json({ id: paper[0] })
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
