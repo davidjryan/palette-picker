@@ -54,7 +54,7 @@ const fetchProjects = async () => {
 const appendProjects = (projects) => {
   projects.forEach((project, index) => {
     // make conditional -- if project.id exists don't append
-    $('ul.sub_menu').append(`<li class="project-${project.id}"><a href="#">${project.project}&raquo;</a><ul class="palette-list-${project.id}"></ul></li>`)
+    $('ul.sub_menu').append(`<li class="project-${project.id}" id="${project.id}><a href="#">${project.project}&raquo;</a><ul class="palette-list-${project.id}"></ul></li>`)
   })
 }
 
@@ -68,8 +68,12 @@ const saveProject = async () => {
     },
     body: JSON.stringify({ project })
   });
-  console.log(savePost)
-  $('.project-input').val('');
+
+  const response = await savePost.json();
+  console.log(response)
+  $('.name-display').text(project)
+  $('.name-display').attr('id', response.id)
+  $('.project-save-input').val('');
 };
 
 const fetchPalettes = async () => {
@@ -78,6 +82,15 @@ const fetchPalettes = async () => {
   console.log(palettesData)
 
   return appendPalettes(palettesData);
+}
+
+const selectProject = (event) => {
+  const project = $(this).text();
+  const projectID = $(this).attr('id')
+
+  $('.name-display').text(project);
+  $('.name-display').attr('id', projectID);
+
 }
 
 const appendPalettes = (palettes) => {
@@ -98,8 +111,7 @@ const appendPalettes = (palettes) => {
 }
 
 document.body.onkeyup = function (event) {
-  console.log(event.keyCode)
-  if (event.keyCode === 32) {
+  if (event.keyCode === 32 && event.target === document.body) {
     getColors();
   }
 };
@@ -110,6 +122,7 @@ $('.lock').on('click', (event) => {
 })
 $('.project-save').on('click', saveProject);
 $('.palette-save').on('click', savePalette);
+$('.sub-menu').on('click', (event) => selectProject(event));
 
 
  
