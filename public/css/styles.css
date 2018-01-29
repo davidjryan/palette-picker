@@ -9,9 +9,7 @@ body {
 a	{
   text-decoration: none;
 }
-ul {
-  list-style: none;
-}
+
 p {
   margin: 15px 0;
 }
@@ -66,20 +64,38 @@ ul.dropdown li.hover a {
 */
 ul.dropdown ul {
   display: flex;
-  flex-direction: column; width: 220px; visibility: hidden; position: absolute; top: 100%; left: 0; }
-ul.dropdown ul li 	{
-  font-weight: normal; background: #f6f6f6; color: #000; 
-									  border-bottom: 1px solid #ccc; float: none; }
+  flex-direction: column;
+  width: 220px;
+  visibility: hidden;
+  position: absolute;
+  top: 100%;
+  left: 0;
+}
+ul.dropdown ul li {
+  font-weight: normal;
+  background: #f6f6f6;
+  color: #000; 
+  border-bottom: 1px solid #ccc;
+  float: none;
+}
 									  
-                                    /* IE 6 & 7 Needs Inline Block */
 ul.dropdown ul li a	{
-  border-right: none; width: 100%; display: inline-block; } 
+  border-right: none;
+  width: 100%;
+  display: inline-block;
+} 
 
 /* 
 	LEVEL THREE
 */
-ul.dropdown ul ul 	{ left: 100%; top: 0; }
-ul.dropdown li:hover > ul{ visibility: visible; }
+ul.dropdown ul ul {
+  left: 100%;
+  top: 0;
+}
+
+ul.dropdown li:hover > ul {
+  visibility: visible;
+}
 
 html {
   height: 100%;
