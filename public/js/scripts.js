@@ -86,13 +86,13 @@ const appendPalettes = (palettes) => {
     console.log(`ul.palette-list-${palette.project_id}`)
     // make conditional -- if palette.id exists don't append
     $(`ul.palette-list-${palette.project_id}`).append(`
-      <li class="palette-${palette.id}">
+      <li class="palette-${palette.id} palette">
         <a href="#">${palette.palette}</a>
         <div class="saved-palettes" style="background-color:${palette.hex1}"></div>
-        <div class="saved-palettes" style="background-color:${palette.hex2}></div>
-        <div class="saved-palettes" style="background-color:${palette.hex3}></div>
-        <div class="saved-palettes" style="background-color:${palette.hex4}></div>
-        <div class="saved-palettes" style="background-color:${palette.hex5}></div>
+        <div class="saved-palettes" style="background-color:${palette.hex2}"></div>
+        <div class="saved-palettes" style="background-color:${palette.hex3}"></div>
+        <div class="saved-palettes" style="background-color:${palette.hex4}"></div>
+        <div class="saved-palettes" style="background-color:${palette.hex5}"></div>
       </li>`)
   })
 }
