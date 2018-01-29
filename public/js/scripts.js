@@ -17,7 +17,7 @@ const getColors = () => {
     if (!$(this).hasClass('locked')) {
       const newColor = randomColor()
       $(this).css('background-color', newColor)
-      $(this).find('.hex').text(newColor) 
+      $(this).find('.hex').text(newColor)
     };
   });
 }
@@ -54,9 +54,23 @@ const fetchProjects = async () => {
 const appendProjects = (projects) => {
   projects.forEach((project, index) => {
     // make conditional -- if project.id exists don't append
-    $('ul.sub_menu').append(`<li class="project-${project.id}"><a href="#">${project.project}</a><ul class="palette-list-${project.id}"></ul></li>`)
+    $('ul.sub_menu').append(`<li class="project-${project.id}"><a href="#">${project.project}&raquo;</a><ul class="palette-list-${project.id}"></ul></li>`)
   })
 }
+
+const saveProject = async () => {
+  const project = $('.project-save-input').val();
+
+  const savePost = await fetch('http://localhost:3000/api/v1/projects', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ project })
+  });
+  console.log(savePost)
+  $('.project-input').val('');
+};
 
 const fetchPalettes = async () => {
   const palettesFetch = await fetch('http://localhost:3000/api/v1/palettes/')
@@ -67,16 +81,25 @@ const fetchPalettes = async () => {
 }
 
 const appendPalettes = (palettes) => {
-  palettes.forEach((palette, index) => { 
+  palettes.forEach((palette, index) => {
     console.log(palette)
-    // make conditional -- if project.id exists don't append
-    $(`li.project-${palette.project_id}`).append(`<li class="palette-${palette.id}"><a href="#">${palette.palette}</a></li>`)
+    console.log(`ul.palette-list-${palette.project_id}`)
+    // make conditional -- if palette.id exists don't append
+    $(`ul.palette-list-${palette.project_id}`).append(`
+      <li class="palette-${palette.id}">
+        <a href="#">${palette.palette}</a>
+        <div class="saved-palettes" style="background-color:${palette.hex1}"></div>
+        <div class="saved-palettes" style="background-color:${palette.hex2}></div>
+        <div class="saved-palettes" style="background-color:${palette.hex3}></div>
+        <div class="saved-palettes" style="background-color:${palette.hex4}></div>
+        <div class="saved-palettes" style="background-color:${palette.hex5}></div>
+      </li>`)
   })
 }
 
-document.body.onkeyup = function (e) {
-  console.log(e.keyCode)
-  if (e.keyCode === 32) {
+document.body.onkeyup = function (event) {
+  console.log(event.keyCode)
+  if (event.keyCode === 32) {
     getColors();
   }
 };
@@ -85,5 +108,8 @@ $('.lock').on('click', (event) => {
   $(event.target).parents('.color').toggleClass('locked');
   $(event.target).toggleClass('closed');
 })
+$('.project-save').on('click', saveProject);
+$('.palette-save').on('click', savePalette);
+
 
  
