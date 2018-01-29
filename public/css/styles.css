@@ -97,6 +97,15 @@ ul.dropdown li:hover > ul {
   visibility: visible;
 }
 
+.palette {
+  display: flex;
+}
+
+.saved-palettes {
+  width: 20%;
+  height: 25px;
+}
+
 html {
   height: 100%;
 }
