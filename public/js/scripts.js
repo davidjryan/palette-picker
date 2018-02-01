@@ -123,9 +123,11 @@ const appendPalettes = (palettes) => {
 }
 
 const savePalette = () => {
-  const project = $('.project-save-input').val();
+  const palette = $('.palette-save-input').val();
+  const projectName = $('.name-display').text();
+  const projectID = $('.name-display').attr('id');
 
-  const savePost = await fetch('http://localhost:3000/api/v1/projects', {
+  const savePost = await fetch(`http://localhost:3000/api/v1/projects/${projectID}/palettes`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
