@@ -53,7 +53,7 @@ const fetchProjects = async () => {
 const appendProjects = (projects) => {
   projects.forEach((project, index) => {
     // make conditional -- if project.id exists don't append
-    $('ul.sub_menu').append(`<li class="project-${project.id} project" id="${project.id} value="${project.project}"><a href="#" class="project-name">${project.project}&raquo;</a><ul class="palette-list-${project.id} palette-list"></ul></li>`)
+    $('ul.sub_menu').append(`<li class="project-${project.id} project" id="${project.id} value="${project.project}"><a href="#" class="project-name" value="${project.id}">${project.project}&raquo;</a><ul class="palette-list-${project.id} palette-list"></ul></li>`)
   })
 
   $('.sub_menu').on('click', (event) => selectProject(event));
@@ -91,7 +91,7 @@ const selectProject = (event) => {
   if ($(target).attr('class') === 'palette-list') {
     const project = $(target).closest('.project').find('.project-name').text();
     const projectID = $(target).attr('value')
-
+    console.log(projectID)
     $('.name-display').text(project);
     $('.name-display').attr('id', projectID);
     
@@ -99,8 +99,8 @@ const selectProject = (event) => {
   }
   console.log('it hits this too')
   const project = $(target).text();
-  const projectID = $(target).attr('id')
-
+  const projectID = $(target).attr('value')
+  console.log(projectID)
   $('.name-display').text(project);
   $('.name-display').attr('id', projectID);
 }
@@ -122,24 +122,33 @@ const appendPalettes = (palettes) => {
   })
 }
 
-const savePalette = () => {
+const savePalette = async () => {
   const palette = $('.palette-save-input').val();
-  const projectName = $('.name-display').text();
-  const projectID = $('.name-display').attr('id');
-
-  const savePost = await fetch(`http://localhost:3000/api/v1/projects/${projectID}/palettes`, {
+  const project = $('.name-display').text();
+  const project_id = $('.name-display').attr('id');
+  const colors = {
+    hex1: $('.color-1-text').text(),
+    hex2: $('.color-2-text').text(),
+    hex3: $('.color-3-text').text(),
+    hex4: $('.color-4-text').text(),
+    hex5: $('.color-5-text').text()
+  }
+  console.log(project_id)
+  const combinedPalette = { palette, ...colors, project_id }
+  console.log(combinedPalette)
+  const savePost = await fetch(`http://localhost:3000/api/v1/projects/${project_id}/palettes`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ project })
+    body: JSON.stringify(combinedPalette)
   });
 
   const response = await savePost.json();
   console.log(response)
   $('.name-display').text(project);
   $('.name-display').attr('id', response.id);
-  $('.project-save-input').val('');
+  $('.palette-save-input').val('');
 }
 
 document.body.onkeyup = function (event) {
@@ -154,6 +163,29 @@ $('.lock').on('click', (event) => {
 })
 $('.project-save').on('click', saveProject);
 $('.palette-save').on('click', savePalette);
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+
+    // Register a new service worker
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(registration => navigator.serviceWorker.ready)
+      .then(registration => {
+        Notification.requestPermission();
+        console.log('ServiceWorker registration successful');
+      }).catch(err => {
+        console.log(`ServiceWorker registration failed: ${err}`);
+      });
+
+  });
+}
+
+const notifyPaletteAdded = (palette) => {
+  navigator.serviceWorker.controller.postMessage({
+    type: 'add-palette',
+    palette
+  })
+}
 
 
  
