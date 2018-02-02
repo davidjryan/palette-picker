@@ -20,6 +20,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.title = 'palette-picker';
 
+const requireHTTPS = (req, res, next) => {
+  if (req.headers['x-forwarded=proto'] !== 'https') {
+    return res.redirect('https://' + req.get('host') + req.url);
+  }
+  next();
+}
+
+app.use(requireHTTPS);
+
 app.get('/', (request, response) => {
   response.send('what up color boy')
 });
@@ -88,6 +97,18 @@ app.post('/api/v1/projects/:id/palettes', (request, response) => {
       return response.status(500).json({ error: 'yay error' })
     })
 })
+
+app.delete('/api/v1/projects/:project/palettes/:id', (request, response) => {
+  const { project, id } = request.params;
+
+  database('palettes').where('project_id', project).where('id', id).del()
+    .then(result => {
+      return response.status(204).json({ result });
+    })
+    .catch(error => {
+      return response.status(500).json({ error });
+    });
+});
 
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
