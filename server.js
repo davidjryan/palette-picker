@@ -70,9 +70,9 @@ app.post('/api/v1/projects/:id/palettes', (request, response) => {
   // grab project id
   const { id } = request.params;
   // combine palette object with project id reference
-  const palette = Object.assign({}, request.body, { project_id: id })
+  const palette = Object.assign({}, request.body, {project_id: id})
   // check for missing params
-  for (let requiredParams of ['project', 'palette', 'hex1', 'hex2', 'hex3', 'hex4', 'hex5']) {
+  for (let requiredParams of ['palette', 'hex1', 'hex2', 'hex3', 'hex4', 'hex5']) {
     if (!palette[requiredParams]) {
       return response
         .status(422)
