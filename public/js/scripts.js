@@ -106,6 +106,7 @@ const selectProject = (event) => {
 }
 
 const appendPalettes = (palettes) => {
+  console.log(palettes)
   palettes.forEach((palette, index) => {
     console.log(palette)
     console.log(`ul.palette-list-${palette.project_id}`)
@@ -126,7 +127,7 @@ const savePalette = async () => {
   const palette = $('.palette-save-input').val();
   const project = $('.name-display').text();
   const project_id = $('.name-display').attr('id');
-  const colors = {
+  let colors = {
     hex1: $('.color-1-text').text(),
     hex2: $('.color-2-text').text(),
     hex3: $('.color-3-text').text(),
@@ -134,7 +135,7 @@ const savePalette = async () => {
     hex5: $('.color-5-text').text()
   }
   console.log(project_id)
-  const combinedPalette = { palette, ...colors, project_id }
+  const combinedPalette = { palette, ...colors }
   console.log(combinedPalette)
   const savePost = await fetch(`http://localhost:3000/api/v1/projects/${project_id}/palettes`, {
     method: 'POST',
@@ -146,6 +147,8 @@ const savePalette = async () => {
 
   const response = await savePost.json();
   console.log(response)
+  colors = [colors]
+  appendPalettes(colors)
   $('.name-display').text(project);
   $('.name-display').attr('id', response.id);
   $('.palette-save-input').val('');
