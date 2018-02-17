@@ -114,11 +114,12 @@ const appendPalettes = (palettes) => {
     $(`ul.palette-list-${palette.project_id}`).append(`
       <li class="palette-${palette.id} palette">
         <a href="#" class="palette-list" value="${palette.project_id}">${palette.palette}</a>
-        <div class="saved-palettes" style="background-color:${palette.hex1}"></div>
-        <div class="saved-palettes" style="background-color:${palette.hex2}"></div>
-        <div class="saved-palettes" style="background-color:${palette.hex3}"></div>
-        <div class="saved-palettes" style="background-color:${palette.hex4}"></div>
-        <div class="saved-palettes" style="background-color:${palette.hex5}"></div>
+        <div class="saved-palettes" value="${palette.project_id}" style="background-color:${palette.hex1}"></div>
+        <div class="saved-palettes" value="${palette.project_id}" style="background-color:${palette.hex2}"></div>
+        <div class="saved-palettes" value="${palette.project_id}" style="background-color:${palette.hex3}"></div>
+        <div class="saved-palettes" value="${palette.project_id}" style="background-color:${palette.hex4}"></div>
+        <div class="saved-palettes" value="${palette.project_id}" style="background-color:${palette.hex5}"></div>
+        <div class="saved-palettes delete">X</div> 
       </li>`)
   })
 }
@@ -152,6 +153,10 @@ const savePalette = async () => {
   $('.name-display').text(project);
   $('.name-display').attr('id', response.id);
   $('.palette-save-input').val('');
+}
+
+const deletePalette = async () = {
+  
 }
 
 document.body.onkeyup = function (event) {
