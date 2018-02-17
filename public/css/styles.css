@@ -106,6 +106,10 @@ ul.dropdown li:hover > ul {
   height: 25px;
 }
 
+.delete {
+  font-size: 25px;
+}
+
 html {
   height: 100%;
 }
