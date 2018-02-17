@@ -21,7 +21,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.locals.title = 'palette-picker';
 
 const requireHTTPS = (req, res, next) => {
-  if (req.headers['x-forwarded=proto'] !== 'https') {
+  if (req.headers['x-forwarded=proto'] !== 'https' && process.env.NODE_ENV === 'production') {
     return res.redirect('https://' + req.get('host') + req.url);
   }
   next();
