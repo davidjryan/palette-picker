@@ -22,6 +22,20 @@ const getColors = () => {
   });
 }
 
+function appendColors() {
+  console.log($(this).val());
+  $(this).val()
+  $(".color").each(function() {
+    if (!$(this).hasClass("locked")) {
+      const newColor = randomColor();
+      $(this).css("background-color", newColor);
+      $(this)
+        .find(".hex")
+        .text(newColor);
+    }
+  });
+}
+
 // dropdown
 $(function () {
 
@@ -112,7 +126,7 @@ const appendPalettes = (palettes) => {
     console.log(`ul.palette-list-${palette.project_id}`)
     // make conditional -- if palette.id exists don't append
     $(`ul.palette-list-${palette.project_id}`).append(`
-      <li class="palette-${palette.id} palette">
+      <li class="palette-${palette.id} palette" value="${palette.project_id}">
         <a href="#" class="palette-list" value="${palette.project_id}">${palette.palette}</a>
         <div class="saved-palettes" value="${palette.project_id}" style="background-color:${palette.hex1}"></div>
         <div class="saved-palettes" value="${palette.project_id}" style="background-color:${palette.hex2}"></div>
@@ -120,7 +134,7 @@ const appendPalettes = (palettes) => {
         <div class="saved-palettes" value="${palette.project_id}" style="background-color:${palette.hex4}"></div>
         <div class="saved-palettes" value="${palette.project_id}" style="background-color:${palette.hex5}"></div>
         <div class="saved-palettes delete">X</div> 
-      </li>`)
+      </li>`);
   })
 }
 
@@ -155,8 +169,12 @@ const savePalette = async () => {
   $('.palette-save-input').val('');
 }
 
-const deletePalette = async () = {
-  
+const selectPalette = () => {
+
+}
+
+const deletePalette = async () => {
+
 }
 
 document.body.onkeyup = function (event) {
@@ -169,6 +187,7 @@ $('.lock').on('click', (event) => {
   $(event.target).parents('.color').toggleClass('locked');
   $(event.target).toggleClass('closed');
 })
+$('li').on('click', appendColor)
 $('.project-save').on('click', saveProject);
 $('.palette-save').on('click', savePalette);
 
