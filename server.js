@@ -53,6 +53,19 @@ app.get('/api/v1/palettes', (request, response) => {
     });
 });
 
+app.get("/api/v1/palettes/:id", (request, response) => {
+  const { id } = request.params;
+  
+  database("palettes")
+    .select()
+    .then(palettes => {
+      response.status(200).json(palettes);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
 app.post('/api/v1/projects', (request, response) => {
   const project = request.body;
 
@@ -98,7 +111,7 @@ app.post('/api/v1/projects/:id/palettes', (request, response) => {
     })
 })
 
-app.delete('/api/v1/projects/:project/palettes/:id', (request, response) => {
+app.delete('/api/v1/palettes/:id', (request, response) => {
   const { project, id } = request.params;
 
   database('palettes').where('project_id', project).where('id', id).del()
