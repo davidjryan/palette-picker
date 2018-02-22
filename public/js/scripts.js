@@ -98,6 +98,7 @@ const saveProject = async () => {
 
   const response = await savePost.json();
   console.log(response)
+  appendProjects([{project, id: response.id}])
   $('.name-display').text(project);
   $('.name-display').attr('id', response.id);
   $('.project-save-input').val('');
