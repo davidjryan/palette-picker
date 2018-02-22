@@ -20,16 +20,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.title = 'palette-picker';
 
-const requireHTTPS = (req, res, next) => {
-  if (req.headers['x-forwarded=proto'] !== 'https') {
-    return res.redirect('https://' + req.get('host') + req.url);
-  }
-  next();
-}
+// const requireHTTPS = (req, res, next) => {
+//   if (req.headers['x-forwarded=proto'] !== 'https') {
+//     return res.redirect('https://' + req.get('host') + req.url);
+//   }
+//   next();
+// }
 
-if (process.env.NODE_ENV === "production") {
-  app.use(requireHTTPS);
-} 
+// if (process.env.NODE_ENV === "production") {
+//   app.use(requireHTTPS);
+// } 
 
 app.get('/', (request, response) => {
   response.send('what up color boy')
