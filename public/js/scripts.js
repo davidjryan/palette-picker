@@ -215,28 +215,5 @@ $('.lock').on('click', (event) => {
 $('.project-save').on('click', saveProject);
 $('.palette-save').on('click', savePalette);
 
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-
-    // Register a new service worker
-    navigator.serviceWorker.register('./service-worker.js')
-      .then(registration => navigator.serviceWorker.ready)
-      .then(registration => {
-        Notification.requestPermission();
-        console.log('ServiceWorker registration successful');
-      }).catch(err => {
-        console.log(`ServiceWorker registration failed: ${err}`);
-      });
-
-  });
-}
-
-const notifyPaletteAdded = (palette) => {
-  navigator.serviceWorker.controller.postMessage({
-    type: 'add-palette',
-    palette
-  })
-}
-
 
  
