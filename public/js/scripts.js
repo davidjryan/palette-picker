@@ -11,8 +11,7 @@ const randomColor = () => {
 }
 
 // assign colors to DOM
-
-const getColors = () => {
+function getColors() {
   $('.color').each( function() {
     if (!$(this).hasClass('locked')) {
       const newColor = randomColor()
@@ -22,18 +21,31 @@ const getColors = () => {
   });
 }
 
-function appendColors() {
-  console.log($(this).val());
-  $(this).val()
-  $(".color").each(function() {
-    if (!$(this).hasClass("locked")) {
-      const newColor = randomColor();
-      $(this).css("background-color", newColor);
+function rgb2hex(rgb) {
+  rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+  function hex(x) {
+    return ("0" + parseInt(x).toString(16)).slice(-2);
+  }
+  return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+}
+
+function appendColors(event) {
+  const palette = $(event.target).attr('value');
+  console.log($(event.target).attr('value'));
+
+  let newColors = [];
+  $(`div.palette-${palette}`).each(function() {
+
+      newColors.push(rgb2hex($(this).css("background-color")))
+    })
+
+    console.log(`div.palette-${palette}`)
+  $(".color").each(function(index) {
+      $(this).css("background-color", newColors[index]);
       $(this)
         .find(".hex")
-        .text(newColor);
-    }
-  });
+        .text(`${newColors[index]}`);
+  })
 }
 
 // dropdown
@@ -58,7 +70,7 @@ $(function () {
 
 // fetch projects
 const fetchProjects = async () => {
-  const projectsFetch = await fetch('http://localhost:3000/api/v1/projects/')
+  const projectsFetch = await fetch('/api/v1/projects/')
   const projectsData = await projectsFetch.json()
 
   return appendProjects(projectsData);
@@ -67,16 +79,16 @@ const fetchProjects = async () => {
 const appendProjects = (projects) => {
   projects.forEach((project, index) => {
     // make conditional -- if project.id exists don't append
-    $('ul.sub_menu').append(`<li class="project-${project.id} project" id="${project.id} value="${project.project}"><a href="#" class="project-name" value="${project.id}">${project.project}&raquo;</a><ul class="palette-list-${project.id} palette-list"></ul></li>`)
+    $('.sub_menu').append(`<li class="project-${project.id} project" id="${project.id}" value="${project.project}"><a href="#" class="project-name" value="${project.id}">${project.project}&raquo;</a><ul class="palette-list-${project.id} palette-list"></ul></li>`)
   })
 
-  $('.sub_menu').on('click', (event) => selectProject(event));
+  $('.project').on('click', function(event){ return selectProject(event)});
 }
 
 const saveProject = async () => {
   const project = $('.project-save-input').val();
 
-  const savePost = await fetch('http://localhost:3000/api/v1/projects', {
+  const savePost = await fetch('/api/v1/projects', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -92,7 +104,7 @@ const saveProject = async () => {
 };
 
 const fetchPalettes = async () => {
-  const palettesFetch = await fetch('http://localhost:3000/api/v1/palettes/')
+  const palettesFetch = await fetch('/api/v1/palettes/')
   const palettesData = await palettesFetch.json();
   console.log(palettesData)
 
@@ -112,8 +124,8 @@ const selectProject = (event) => {
     return;
   }
   console.log('it hits this too')
-  const project = $(target).text();
-  const projectID = $(target).attr('value')
+  const project = $(target).closest('.project').attr('value');
+  const projectID = $(target).closest('.project').prop('id')
   console.log(projectID)
   $('.name-display').text(project);
   $('.name-display').attr('id', projectID);
@@ -126,16 +138,21 @@ const appendPalettes = (palettes) => {
     console.log(`ul.palette-list-${palette.project_id}`)
     // make conditional -- if palette.id exists don't append
     $(`ul.palette-list-${palette.project_id}`).append(`
-      <li class="palette-${palette.id} palette" value="${palette.project_id}">
-        <a href="#" class="palette-list" value="${palette.project_id}">${palette.palette}</a>
-        <div class="saved-palettes" value="${palette.project_id}" style="background-color:${palette.hex1}"></div>
-        <div class="saved-palettes" value="${palette.project_id}" style="background-color:${palette.hex2}"></div>
-        <div class="saved-palettes" value="${palette.project_id}" style="background-color:${palette.hex3}"></div>
-        <div class="saved-palettes" value="${palette.project_id}" style="background-color:${palette.hex4}"></div>
-        <div class="saved-palettes" value="${palette.project_id}" style="background-color:${palette.hex5}"></div>
-        <div class="saved-palettes delete">X</div> 
-      </li>`);
+      <li class="palette-${palette.id} palette" value="${palette.id}">
+        <a href="#" class="palette-list" value="${palette.id}">${palette.palette}</a>
+        <div class="saved-palettes palette-${palette.id}" value="${palette.id}" data-${palette.hex1} style="background-color:${palette.hex1}"></div>
+        <div class="saved-palettes palette-${palette.id}" value="${palette.id}" data-${palette.hex2} style="background-color:${palette.hex2}"></div>
+        <div class="saved-palettes palette-${palette.id}" value="${palette.id}" data-${palette.hex3} style="background-color:${palette.hex3}"></div>
+        <div class="saved-palettes palette-${palette.id}" value="${palette.id}" data-${palette.hex4} style="background-color:${palette.hex4}"></div>
+        <div class="saved-palettes palette-${palette.id}" value="${palette.id}" data-${palette.hex5} style="background-color:${palette.hex5}"></div>
+        <div class="saved-palettes delete">X</div>
+      </li>`
+    );
   })
+    $(".palette").on("click", function(event) {
+      return appendColors(event);
+    });
+    $(".palette").on("click",'.delete', deletePalette);
 }
 
 const savePalette = async () => {
@@ -151,8 +168,8 @@ const savePalette = async () => {
   }
   console.log(project_id)
   const combinedPalette = { palette, ...colors }
-  console.log(combinedPalette)
-  const savePost = await fetch(`http://localhost:3000/api/v1/projects/${project_id}/palettes`, {
+  appendPalettes([{project_id, ...combinedPalette}])
+  const savePost = await fetch(`/api/v1/projects/${project_id}/palettes`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -162,10 +179,8 @@ const savePalette = async () => {
 
   const response = await savePost.json();
   console.log(response)
-  colors = [colors]
-  appendPalettes(colors)
   $('.name-display').text(project);
-  $('.name-display').attr('id', response.id);
+  $('.name-display').attr('id', project_id);
   $('.palette-save-input').val('');
 }
 
@@ -173,8 +188,18 @@ const selectPalette = () => {
 
 }
 
-const deletePalette = async () => {
+async function deletePalette() {
+  const paletteID = $(this).closest('li').attr('value')
+  console.log(paletteID)
 
+  await fetch(`/api/v1/palettes/${paletteID}`, {
+    method: 'DELETE',
+    headers: {
+      "Content-Type": "application/json"
+    },
+  })
+
+  $(this).closest('li').remove();
 }
 
 document.body.onkeyup = function (event) {
@@ -187,7 +212,6 @@ $('.lock').on('click', (event) => {
   $(event.target).parents('.color').toggleClass('locked');
   $(event.target).toggleClass('closed');
 })
-$('li').on('click', appendColor)
 $('.project-save').on('click', saveProject);
 $('.palette-save').on('click', savePalette);
 

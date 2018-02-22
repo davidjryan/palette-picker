@@ -112,9 +112,9 @@ app.post('/api/v1/projects/:id/palettes', (request, response) => {
 })
 
 app.delete('/api/v1/palettes/:id', (request, response) => {
-  const { project, id } = request.params;
+  const { palette, id } = request.params;
 
-  database('palettes').where('project_id', project).where('id', id).del()
+  database('palettes').where('id', id).del()
     .then(result => {
       return response.status(204).json({ result });
     })
@@ -126,3 +126,5 @@ app.delete('/api/v1/palettes/:id', (request, response) => {
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 })
+
+module.exports = app;

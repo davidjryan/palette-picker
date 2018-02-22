@@ -1,3 +1,5 @@
+process.env.NODE_ENV = "test";
+
 const chai = require('chai');
 const should = chai.should();
 const chaiHttp = require('chai-http');
@@ -12,7 +14,6 @@ describe('Client Routes', () => {
       .then(response => {
         response.should.have.status(200);
         response.should.be.html;
-        response.res.text.should.equal('what up color boy');
       })
       .catch(err => {
         throw err;
