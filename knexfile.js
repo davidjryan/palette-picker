@@ -7,10 +7,10 @@ module.exports = {
       filename: "postgres://localhost/palette"
     },
     migrations: {
-      directory: "./db/migrations"
+      directory: `${__dirname}/db/migrations`
     },
     seed: {
-      directory: "./db/seeds/dev"
+      directory: `${__dirname}/db/seeds/dev`
     },
     useNullAsDefault: true
   },
@@ -19,10 +19,10 @@ module.exports = {
     connection: "postgres://localhost/palette_test",
     useNullAsDefault: true,
     migrations: {
-      directory: __dirname + "/db/migrations"
+      directory: `${__dirname}/db/migrations`
     },
     seed: {
-      directory: "./db/seeds/test"
+      directory: `${__dirname}/db/seeds/test`
     }
   },
   production: {
