@@ -20,6 +20,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.locals.title = 'palette-picker';
 
+const requireHTTPS = (req, res, next) => {
+  if (req.headers['x-forwarded=proto'] !== 'https' && process.env.NODE_ENV === 'production') {
+    return res.redirect('https://' + req.get('host') + req.url);
+  }
+  next();
+}
+
+app.use(requireHTTPS);
+
 app.get('/', (request, response) => {
   response.send('what up color boy')
 });
@@ -44,8 +53,20 @@ app.get('/api/v1/palettes', (request, response) => {
     });
 });
 
+app.get("/api/v1/palettes/:id", (request, response) => {
+  const { id } = request.params;
+  
+  database("palettes")
+    .select()
+    .then(palettes => {
+      response.status(200).json(palettes);
+    })
+    .catch(error => {
+      response.status(500).json({ error });
+    });
+});
+
 app.post('/api/v1/projects', (request, response) => {
-  console.log(request)
   const project = request.body;
 
   for (let requiredParameter of ['project']) {
@@ -71,9 +92,9 @@ app.post('/api/v1/projects/:id/palettes', (request, response) => {
   // grab project id
   const { id } = request.params;
   // combine palette object with project id reference
-  const palette = Object.assign({}, request.body, { project_id: id })
+  const palette = Object.assign({}, request.body, {project_id: id})
   // check for missing params
-  for (let requiredParams of ['project', 'palette', 'hex1', 'hex2', 'hex3', 'hex4', 'hex5']) {
+  for (let requiredParams of ['palette', 'hex1', 'hex2', 'hex3', 'hex4', 'hex5']) {
     if (!palette[requiredParams]) {
       return response
         .status(422)
@@ -90,6 +111,20 @@ app.post('/api/v1/projects/:id/palettes', (request, response) => {
     })
 })
 
+app.delete('/api/v1/palettes/:id', (request, response) => {
+  const { palette, id } = request.params;
+
+  database('palettes').where('id', id).del()
+    .then(result => {
+      return response.status(204).json({ result });
+    })
+    .catch(error => {
+      return response.status(500).json({ error });
+    });
+});
+
 app.listen(app.get('port'), () => {
   console.log(`${app.locals.title} is running on ${app.get('port')}.`);
 })
+
+module.exports = app;
